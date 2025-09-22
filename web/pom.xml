@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.github.thiagogarbazza.pocs.poc-springboot-strusts1</groupId>
     <artifactId>parent</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -21,13 +21,13 @@
     <dependency>
       <groupId>com.github.thiagogarbazza.pocs.poc-springboot-strusts1</groupId>
       <artifactId>core</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
+      <version>0.1.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>com.github.thiagogarbazza.pocs.poc-springboot-strusts1</groupId>
       <artifactId>core</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
+      <version>0.1.0</version>
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
