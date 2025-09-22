@@ -22,7 +22,7 @@ public class AbstractFilter {
 
     public final int getPs() {
         return Optional.ofNullable(ps)
-                .filter(i -> i >= 0)
+                .filter(i -> i > 0)
                 .orElse(10);
     }
 }

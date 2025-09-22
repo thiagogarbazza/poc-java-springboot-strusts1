@@ -22,10 +22,10 @@ class AbstractFilterTest {
     @Test
     void verifyGetPageSize() {
         assertAll(
-                () -> assertEquals(0, Filter.builder().build().getPs(), "TEN when not informed"),
-                () -> assertEquals(0, Filter.builder().ps(-1).build().getPn(), "TEN when informed negative number"),
-                () -> assertEquals(0, Filter.builder().ps(0).build().getPn(), "TEN when informed zero"),
-                () -> assertEquals(1, Filter.builder().ps(1).build().getPn(), "Number informed")
+                () -> assertEquals(10, Filter.builder().build().getPs(), "TEN when not informed"),
+                () -> assertEquals(10, Filter.builder().ps(-1).build().getPs(), "TEN when informed negative number"),
+                () -> assertEquals(10, Filter.builder().ps(0).build().getPs(), "TEN when informed zero"),
+                () -> assertEquals(1, Filter.builder().ps(1).build().getPs(), "Number informed")
         );
     }
 
