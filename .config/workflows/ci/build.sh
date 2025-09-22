@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-version=$(sed -ne '10,15 s/<version>\(.*\)<\/version>/\1/p' pom.xml | tr -d '[:space:]')
+mkdir -p core/src/main/resources
 echo -e "# File generate on build time
-app.version-info.version=${version}
+app.version-info.version=$(sed -ne '10,15 s/<version>\(.*\)<\/version>/\1/p' pom.xml | tr -d '[:space:]')
 app.version-info.date-time=$(date +"%Y-%m-%d %H:%M:%S")
 app.version-info.git-commit-branch=$(git describe --tags --exact-match HEAD 2>/dev/null || git branch --show-current 2>/dev/null)
 app.version-info.git-commit-hash=$(git rev-parse HEAD)
