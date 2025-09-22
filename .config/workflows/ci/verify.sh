@@ -2,7 +2,6 @@
 set -euo pipefail
 
 ./mvnw \
-  --batch-mode \
   --fail-fast \
   org.jacoco:jacoco-maven-plugin:prepare-agent \
   org.jacoco:jacoco-maven-plugin:prepare-agent-integration \
@@ -16,6 +15,5 @@ set -euo pipefail
   verify
 
 ./mvnw \
-  --batch-mode \
   org.jacoco:jacoco-maven-plugin:report \
   -DCI=true
