@@ -1,0 +1,8 @@
+spring:
+  main:
+    banner-mode: off
+    lazy-initialization: true
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/my_db}
+    username: ${DB_USER:my_db_user}
+    password: ${DB_PASS:my_db_p@55}

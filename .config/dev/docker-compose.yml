@@ -1,0 +1,22 @@
+services:
+
+  postgres:
+    image: postgres:17.5-alpine
+    environment:
+      POSTGRES_DB: my_db
+      POSTGRES_USER: my_db_user
+      POSTGRES_PASSWORD: my_db_p@55
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pg_isready --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --quiet
+      interval: 1s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+      start_interval: 5s
+
+volumes:
+  postgres-data:

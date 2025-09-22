@@ -1,0 +1,29 @@
+name: Release - close version
+on:
+  workflow_dispatch:
+
+jobs:
+
+  close-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up java with JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Git - configure user
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Execute close version script
+        run: bash .config/workflows/release/close-version.sh
+      - name: Git - push modifications
+        run: |
+          git push
+          git push --tags

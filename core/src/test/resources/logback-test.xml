@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender class="ch.qos.logback.core.ConsoleAppender" name="STDOUT">
+    <encoder>
+      <pattern>%highlight(%d{HH:mm:ss.SSS} [%-5level] [%logger] %msg%n)</pattern>
+    </encoder>
+  </appender>
+
+  <logger level="ALL" name="com.github.thiagogarbazza.pocs"/>
+  <logger level="WARN" name="org.apache.catalina"/>
+  <logger level="ALL" name="org.apache.struts"/>
+  <logger level="ERROR" name="org.hibernate"/>
+  <logger level="INFO" name="org.springframework"/>
+
+  <root level="WARN">
+    <appender-ref ref="STDOUT"/>
+  </root>
+</configuration>

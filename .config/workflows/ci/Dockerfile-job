@@ -1,0 +1,5 @@
+FROM eclipse-temurin:11-jre-jammy
+
+CMD ["/app/bin/run.sh"]
+
+ADD target/deploy-assets/app-job.tar /app

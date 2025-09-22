@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+    "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+
+  <global-exceptions>
+    <exception handler="com.github.thiagogarbazza.pocs.app.web.configuration.StrutsExceptionHandler" key="not-found-exception" type="com.github.thiagogarbazza.pocs.app.utils.NotFoundException" path="/pages/error-404.jsp"/>
+    <exception handler="com.github.thiagogarbazza.pocs.app.web.configuration.StrutsExceptionHandler" key="exception" type="java.lang.Exception" path="/pages/error.jsp"/>
+  </global-exceptions>
+
+  <global-forwards>
+    <forward name="error" path="/pages/error.jsp"/>
+  </global-forwards>
+
+  <action-mappings>
+    <action path="/action/simple" type="com.github.thiagogarbazza.pocs.app.web.pages.SimpleAction" validate="false"/>
+    <action path="/action/simple-spring" type="com.github.thiagogarbazza.pocs.app.web.pages.SimpleSpringAction" validate="false"/>
+  </action-mappings>
+
+  <controller>
+    <set-property property="processorClass" value="com.github.thiagogarbazza.pocs.app.web.configuration.StrutsRequestProcessor"/>
+  </controller>
+</struts-config>

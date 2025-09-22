@@ -1,0 +1,35 @@
+services:
+
+  web:
+    image: thiagogarbazza/pocs/poc-springboot-strusts1/web:latest
+    build:
+      context: ../../
+      dockerfile: .config/workflows/ci/Dockerfile-web
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/my_db
+      DB_USER: my_db_user
+      DB_PASS: my_db_p@55
+      JAVA_OPTS: -Dapp.algorithm=SHA-256
+    ports:
+      - "8080:8080"
+
+  postgres:
+    image: postgres:17.5-alpine
+    environment:
+      POSTGRES_DB: my_db
+      POSTGRES_USER: my_db_user
+      POSTGRES_PASSWORD: my_db_p@55
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pg_isready --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --quiet
+      interval: 1s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+      start_interval: 5s
+
+volumes:
+  postgres-data:

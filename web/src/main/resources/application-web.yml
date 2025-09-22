@@ -1,0 +1,20 @@
+
+management:
+  health:
+    probes:
+      enabled: true
+
+spring:
+  main:
+    banner-mode: off
+    lazy-initialization: true
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    platform: postgres

@@ -1,0 +1,36 @@
+name: Release - next version
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        type: choice
+        description: Wich type of version to release
+        default: minor
+        options:
+          - minor
+          - major
+
+jobs:
+
+  next-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up java with JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Git - configure user
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Execute next version script
+        run: bash .config/workflows/release/next-${{ github.event.inputs.type }}-version.sh
+      - name: Git - push modifications
+        run: |
+          git push
