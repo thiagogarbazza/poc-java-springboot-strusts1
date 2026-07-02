@@ -16,9 +16,8 @@ on:
 
 jobs:
 
-  close-version:
-    if: ${{ inputs.type == 'Fechar versão' }}
-    name: Fechar versão
+  execution:
+    name: ${{ github.event.inputs.type }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -36,80 +35,60 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Fechar a versão
-        run: |
-          #!/bin/bash
-          set -euo pipefail
-
-          echo "Fechando a versão"
-          ./mvnw versions:set -DremoveSnapshot=true --quiet --errors
-          closed_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout --quiet --errors)
-
-          git add "**pom.xml" --verbose
-          git commit --message "release: ${closed_version}"
-          git tag --force --message "release: ${closed_version}" "${closed_version}"
-
-          echo "Gerando a próxima versão de desenvolvimento"
-          ./mvnw versions:set -DnextSnapshot=true --quiet --errors
-          next_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout --quiet --errors)
-
-          git add "**pom.xml" --verbose
-          git commit --message "release: prepara a próxima versão ${next_version}"
-      - name: Git - push modifications
-        run: |
-          git push
-          git push --tags
-
-  next-version:
-    if: ${{ inputs.type == 'Proxima versão menor' || inputs.type == 'Proxima versão maior' }}
-    name: Próxima versão
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up java with JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-          cache: maven
-      - name: Git - configure user
-        run: |
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Fechar a versão
+      - name: Executa - ${{ github.event.inputs.type }}
         env:
-          TYPE: ${{ inputs.type }}
+          TYPE: ${{ github.event.inputs.type }}
         run: |
           #!/bin/bash
           set -euo pipefail
 
-          echo "Gerando a próxima versão de desenvolvimento"
           case "$TYPE" in
+            "Fechar versão")
+              echo "Fechando a versão"
+              ./mvnw versions:set -DremoveSnapshot=true --quiet --errors
+              closed_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout --quiet --errors)
+              
+              git add "**pom.xml" --verbose
+              git commit --message "release: ${closed_version}"
+              git tag --force --message "release: ${closed_version}" "${closed_version}"
+              
+              echo "Gerando a próxima versão de desenvolvimento"
+              ./mvnw versions:set -DnextSnapshot=true --quiet --errors
+              next_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout --quiet --errors)
+              
+              git add "**pom.xml" --verbose
+              git commit --message "chore(release): preparar versão ${next_version}"
+              ;;
             "Proxima versão menor")
+              echo "Gerando a próxima versão menor de desenvolvimento"
               ./mvnw build-helper:parse-version \
                 versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0-SNAPSHOT \
                 --quiet \
                 --errors
+          
+              version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout --quiet --errors)
+
+              git add "**pom.xml" --verbose
+              git commit --message "chore(release): preparar versão ${version}"
               ;;
             "Proxima versão maior")
+              echo "Gerando a próxima versão maior de desenvolvimento"
               ./mvnw build-helper:parse-version \
                 versions:set -DnewVersion=\${parsedVersion.nextMajorVersion}.0.0-SNAPSHOT \
                 --quiet \
-                --errors
+                --errors          
+          
+              version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout --quiet --errors)
+
+              git add "**pom.xml" --verbose
+              git commit --message "chore(release): preparar versão ${version}"
               ;;
             *)
               echo "Erro: Opção não suportada."
               exit 1
               ;;
           esac
-          next_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout --quiet --errors)
 
-          git add "**pom.xml" --verbose
-          git commit --message "release: prepara a próxima versão ${next_version}"
       - name: Git - push modifications
         run: |
           git push
