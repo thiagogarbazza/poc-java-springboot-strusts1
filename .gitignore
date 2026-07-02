@@ -16,6 +16,7 @@ app-version-info.properties
 .settings
 .springBeans
 .sts4-cache
+pom.xml.versionsBackup
 
 ### IntelliJ IDEA ###
 .idea
