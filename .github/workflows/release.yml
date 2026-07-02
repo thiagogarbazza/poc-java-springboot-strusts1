@@ -42,16 +42,16 @@ jobs:
           set -euo pipefail
 
           echo "Fechando a versão"
-          ./mvnw versions:set -DremoveSnapshot=true
-          closed_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          ./mvnw versions:set -DremoveSnapshot=true --quiet --errors
+          closed_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout --quiet --errors)
 
           git add "**pom.xml" --verbose
           git commit --message "release: ${closed_version}"
           git tag --force --message "release: ${closed_version}" "${closed_version}"
 
           echo "Gerando a próxima versão de desenvolvimento"
-          ./mvnw versions:set -DnextSnapshot=true
-          next_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          ./mvnw versions:set -DnextSnapshot=true --quiet --errors
+          next_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout --quiet --errors)
 
           git add "**pom.xml" --verbose
           git commit --message "release: prepara a próxima versão ${next_version}"
@@ -91,18 +91,22 @@ jobs:
           case "$TYPE" in
             "Proxima versão menor")
               ./mvnw build-helper:parse-version \
-                versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0-SNAPSHOT
+                versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0-SNAPSHOT \
+                --quiet \
+                --errors
               ;;
             "Proxima versão maior")
               ./mvnw build-helper:parse-version \
-                versions:set -DnewVersion=\${parsedVersion.nextMajorVersion}.0.0-SNAPSHOT
+                versions:set -DnewVersion=\${parsedVersion.nextMajorVersion}.0.0-SNAPSHOT \
+                --quiet \
+                --errors
               ;;
             *)
               echo "Erro: Opção não suportada."
               exit 1
               ;;
           esac
-          next_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          next_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout --quiet --errors)
 
           git add "**pom.xml" --verbose
           git commit --message "release: prepara a próxima versão ${next_version}"
