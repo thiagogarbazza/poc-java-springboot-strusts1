@@ -86,7 +86,7 @@ jobs:
           set -euo pipefail
 
           echo "Gerando a próxima versão de desenvolvimento"
-          case "$CHOICE_INPUT" in
+          case "$TYPE" in
             "Proxima versão menor")
               ./mvnw build-helper:parse-version \
                 versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0-SNAPSHOT
