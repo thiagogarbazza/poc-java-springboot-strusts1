@@ -43,7 +43,7 @@ jobs:
           ./mvnw versions:set -DremoveSnapshot=true
           closed_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
 
-          git add "**/pom.xml"
+          git add "**pom.xml" --verbose
           git commit --message "release: ${closed_version}"
           git tag --force --message "release: ${closed_version}" "${closed_version}"
 
@@ -51,7 +51,7 @@ jobs:
           ./mvnw versions:set -DnextSnapshot=true
           next_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
 
-          git add "**/pom.xml"
+          git add "**pom.xml" --verbose
           git commit --message "release: prepara a próxima versão ${next_version}"
       - name: Git - push modifications
         run: |
@@ -102,7 +102,7 @@ jobs:
           esac
           next_version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
 
-          git add "**/pom.xml"
+          git add "**pom.xml" --verbose
           git commit --message "release: prepara a próxima versão ${next_version}"
       - name: Git - push modifications
         run: |
