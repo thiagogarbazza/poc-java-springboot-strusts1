@@ -10,7 +10,7 @@
 
 	<groupId>com.github.thiagogarbazza.pocs.poc-springboot-strusts1</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.10.1</version>
+	<version>0.10.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
